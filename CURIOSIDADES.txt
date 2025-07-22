@@ -1,0 +1,9 @@
+1;Si un robot es incapaz de moverse durante 30 segundos, porque está muy dañado o Se le avería el motor, se aplica una cuenta regresiva de 10 segundos y es declarado fuera de combate.
+2;El BattleBox es una Arena cuadrada de 48'x48' construida de forma que proteja de la metralla ocasionada por los destrozos entre los robots.
+3;Por 5 temporadas el programa de televisión fue transmitido por el canal Comedy Central, algunos episodios también se han transmitido por Discovery Channel.
+4;BattleBots Inc. tiene su sede en Vallejo, California y cuenta con la mayoría de sus competencias en San Francisco.
+5;Los encuentros son de 3 minutos de duración.
+6;Un encuentro se pausa cuando cuando los robots están pegados y no se puede separar o cuando se quedan sin poder moverse por daños. O cuando ambos robots se incendien.
+7;El controlador puede solicitar que se pare el combate, perdiéndolo, si ve que su robot está a punto de ser destruido.
+8;En aproximadamente la mitad de los encuentros, los dos robots sobreviven a los 3 minutos.
+9;Los riesgos de arena hacen las peleas más interesantes e imprevisibles, y premiar a los conductores sorteen los peligros, mientras empujen a su oponente hacia ellos
