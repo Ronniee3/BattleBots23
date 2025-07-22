@@ -3,7 +3,7 @@
 ##  Integrantes
 
 - Roniel David Castro Navarro
-- Hanna Mikael Meza Cuervo
+- Hanna Mikael Mesa Cuervo
 
 ##  ¿Cómo ejecutar el programa?
 
