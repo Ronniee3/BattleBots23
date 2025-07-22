@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
+#include <limits>
 #include <map>
 using namespace std;
 
@@ -18,43 +19,72 @@ struct Robot {
 vector<string> historialBusquedas;
 
     
+string aMinusculasYTrim(string texto) {
+    while (!texto.empty() && isspace(texto.front())) texto.erase(texto.begin());
+    while (!texto.empty() && isspace(texto.back())) texto.pop_back();
+    for (char& c : texto) c = tolower(c);
+    return texto;
+}
+
 void buscarCampeonatoPorNombre() {
     ifstream archivo("CAMPEONATOS.txt");
     if (!archivo) {
-        cerr << "No se pudo abrir el archivo de campeonatos.\n" << endl;
+        cerr << "No se pudo abrir el archivo de campeonatos.\n";
         return;
     }
 
     string nombreBuscado, añoBuscado;
-    cin.ignore(); 
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    cout << "¡Ingresa el nombre del campeonato!: ";
+    cout << "Ingresa el nombre del campeonato: ";
     getline(cin, nombreBuscado);
 
-    cout << "¡Ingresa el año! (puedes dejar vacío si no lo sabes, tranqui): ";
+    cout << "Ingresa el año (puedes dejar vacío si no lo sabes): ";
     getline(cin, añoBuscado);
 
     historialBusquedas.push_back("Búsqueda de campeonato: " + nombreBuscado + " (" + añoBuscado + ")");
 
-    string linea;
+    nombreBuscado = aMinusculasYTrim(nombreBuscado);
+    añoBuscado = aMinusculasYTrim(añoBuscado);
+
     bool encontrado = false;
+    string linea;
+
 
     while (getline(archivo, linea)) {
-        stringstream ss(linea);
-        string nombre, sitio, dia, año, categoria, rondas, ganador;
+    string nombre = aMinusculasYTrim(linea);
+    if (nombre.empty()) continue;
+    vector<string> datos;
 
-        getline(ss, nombre, '|');
-        getline(ss, sitio, '|');
-        getline(ss, dia, '|');
-        getline(ss, año, '|');
-        getline(ss, categoria, '|');
-        getline(ss, rondas, '|');
-        getline(ss, ganador, '|');
+    string lineaDatos;
+    while (getline(archivo, lineaDatos) && lineaDatos != "*") {
+        datos.push_back(lineaDatos);
+    }
 
-        if ((nombre.find(nombreBuscado) != string::npos) &&
-            (añoBuscado.empty() || año == añoBuscado)) {
+        string sitio = "", dia = "", año = "", categoria = "", rondas = "", ganador = "";
 
-            cout << "\n Campeonato encontrado:\n";
+        for (string campo : datos) {
+            size_t pos = campo.find(":");
+            if (pos == string::npos) continue;
+
+            string clave = aMinusculasYTrim(campo.substr(0, pos));
+            string valor = aMinusculasYTrim(campo.substr(pos + 1));
+
+            if (clave == "sitio") sitio = valor;
+            else if (clave == "día" || clave == "dia") dia = valor;
+            else if (clave == "año" || clave == "ano") año = valor;
+            else if (clave == "categorías" || clave == "categorias") categoria = valor;
+            else if (clave == "n° de rondas" || clave == "n de rondas") rondas = valor;
+            else if (clave == "ganador/es") ganador = valor;
+        }
+
+        string nombreNormalizado = aMinusculasYTrim(nombre);
+
+
+        if (nombreNormalizado.find(nombreBuscado) != string::npos &&
+            (añoBuscado.empty() || año.find(añoBuscado) != string::npos)) {
+            
+            cout << "\nCampeonato encontrado:\n";
             cout << "Nombre: " << nombre << endl;
             cout << "Sitio: " << sitio << endl;
             cout << "Día: " << dia << endl;
@@ -64,17 +94,18 @@ void buscarCampeonatoPorNombre() {
             cout << "Ganador/es: " << ganador << endl;
 
             encontrado = true;
-            break;
         }
     }
 
     if (!encontrado) {
-        
-        cout << "No se encontró ningún campeonato con esos datos. Intenta otra vez.\n" << endl;
-        }
+        cout << "No se encontró ningún campeonato con esos datos.\n";
+    }
 
     archivo.close();
 }
+
+
+
 
 
 int calcularDaño(Robot atacante, Robot defensor) {
@@ -163,13 +194,13 @@ void mostrarHistorial() {
         }
     }
 }
-
- void curisidades(){
+     
+void curiosidadess(){
      map<string, string> curiosidades;
 
     ifstream archivo("CURIOSIDADES.txt");
     if (!archivo.is_open()) {
-        cout << "Oops! No se pudo cargar el archivo...";
+        cout << "¡Uyyy! No se pudo cargar el archivo...";
     }
 
     string linea;
@@ -186,22 +217,18 @@ void mostrarHistorial() {
 
     archivo.close();
 
-    // Inicializar semilla para número aleatorio
     srand(static_cast<unsigned int>(time(0)));
 
-    // Elegir número aleatorio 
     int eleccionnum = 1 + (rand() % 9);
     string claveBuscada = to_string(eleccionnum);
 
-    
     auto it = curiosidades.find(claveBuscada);
     if (it != curiosidades.end()) {
         cout << "Curiosidad #" << claveBuscada << ": " << it->second << endl;
     } 
-
-    
 }
- 
+
+
 
  void mostrarMenuPrincipal(){
      int opcion;
@@ -220,12 +247,13 @@ void mostrarHistorial() {
             case 1: buscarCampeonatoPorNombre(); break;
             case 2: mostrarHistorial(); break;
             case 3: iniciarBatalla(); break;
-            case 4: curisidades(); break;
+            case 4: curiosidadess(); break;
             default: cout << "Opción no válida.\n";
         }
      } while (opcion != 0);
  }
-
+ 
+ 
 int main()
 {
     cout << "\t ¡Bienvenid@! \t" << endl << "Este programa te ayudará a buscar un campeonato de BattleBots!" << endl;
