@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <sstream>
+#include <map>
 using namespace std;
 
 struct Robot {
@@ -164,8 +165,43 @@ void mostrarHistorial() {
 }
 
  void curisidades(){
-     
- }
+     map<string, string> curiosidades;
+
+    ifstream archivo("CURIOSIDADES.txt");
+    if (!archivo.is_open()) {
+        cout << "Oops! No se pudo cargar el archivo...";
+    }
+
+    string linea;
+    while (getline(archivo, linea)) {
+        if (linea.empty()) continue;
+
+        stringstream ss(linea);
+        string clave, texto;
+        getline(ss, clave, ';');
+        getline(ss, texto);
+
+        curiosidades[clave] = texto;
+    }
+
+    archivo.close();
+
+    // Inicializar semilla para números aleatorios
+    srand(static_cast<unsigned int>(time(0)));
+
+    // Elegir número aleatorio entre 1 y 9
+    int eleccionnum = 1 + (rand() % 9);
+    string claveBuscada = to_string(eleccionnum);
+
+    // Buscar y mostrar la curiosidad correspondiente
+    auto it = curiosidades.find(claveBuscada);
+    if (it != curiosidades.end()) {
+        cout << "Curiosidad #" << claveBuscada << ": " << it->second << endl;
+    } 
+
+    
+}
+ 
 
  void mostrarMenuPrincipal(){
      int opcion;
