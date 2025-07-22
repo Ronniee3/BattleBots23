@@ -186,14 +186,14 @@ void mostrarHistorial() {
 
     archivo.close();
 
-    // Inicializar semilla para números aleatorios
+    // Inicializar semilla para número aleatorio
     srand(static_cast<unsigned int>(time(0)));
 
-    // Elegir número aleatorio entre 1 y 9
+    // Elegir número aleatorio 
     int eleccionnum = 1 + (rand() % 9);
     string claveBuscada = to_string(eleccionnum);
 
-    // Buscar y mostrar la curiosidad correspondiente
+    
     auto it = curiosidades.find(claveBuscada);
     if (it != curiosidades.end()) {
         cout << "Curiosidad #" << claveBuscada << ": " << it->second << endl;
